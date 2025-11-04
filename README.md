@@ -120,6 +120,26 @@ Run the Gradio app for inference:
 python gradio_app.py
 ```
 
+#### Colab-ready script for LatentSync 1.5
+
+If you are following the LatentSync 1.5 Google Colab tutorial, use the dedicated
+launcher that is already tracked in the repository. The configuration matches
+the 256×256 Stage2 checkpoint recommended for v1.5.
+
+```bash
+python app_v15.py
+```
+
+> [!TIP]
+> Previous notebook snippets circulated online re-generated `app_v15.py` from a
+> raw Python string that escaped triple quotes, leaving literal `\"\"\"`
+> characters in the file and triggering `SyntaxError: unexpected character after
+> line continuation character`. In Colab, simply restore the tracked file with
+> `!git checkout -- app_v15.py` before launching the demo. A step-by-step
+> walkthrough is available in [`docs/colab_v15.md`](docs/colab_v15.md), and a
+> ready-to-run notebook lives at
+> [`notebooks/latentsync_v15_colab.ipynb`](notebooks/latentsync_v15_colab.ipynb).
+
 ### 2. Command Line Interface
 
 Run the script for inference:
