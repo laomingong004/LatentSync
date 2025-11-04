@@ -15,6 +15,8 @@ from __future__ import annotations
 import argparse
 from datetime import datetime
 from pathlib import Path
+from typing import Any, Mapping, Union
+import tempfile
 
 import gradio as gr
 from omegaconf import OmegaConf
@@ -26,8 +28,8 @@ CHECKPOINT_PATH = Path("checkpoints/latentsync_unet.pt")
 
 
 def process_video(
-    video_path: str,
-    audio_path: str,
+    video_path: Union[str, Path, Mapping[str, Any], None],
+    audio_path: Union[str, Path, Mapping[str, Any], None],
     guidance_scale: float,
     inference_steps: int,
     seed: int,
@@ -36,9 +38,11 @@ def process_video(
     output_dir = Path("./temp")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    video_file_path = Path(video_path)
+    video_file_path = _ensure_local_path(video_path, label="Video", cache_dir=output_dir)
+    audio_file_path = _ensure_local_path(audio_path, label="Audio", cache_dir=output_dir)
+
     video_path = video_file_path.resolve().as_posix()
-    audio_path = Path(audio_path).resolve().as_posix()
+    audio_path = audio_file_path.resolve().as_posix()
 
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = output_dir / f"{video_file_path.stem}_{current_time}.mp4"
@@ -105,6 +109,52 @@ def _create_args(
             "--enable_deepcache",
         ]
     )
+
+
+def _ensure_local_path(
+    media: Union[str, Path, Mapping[str, Any], None],
+    *,
+    label: str,
+    cache_dir: Path,
+) -> Path:
+    """Convert a Gradio FileData object (or plain path) into a local Path."""
+    if media is None:
+        raise ValueError(f"{label} input is required.")
+
+    candidate: Path | None = None
+
+    if isinstance(media, Path):
+        candidate = media
+    elif isinstance(media, str):
+        candidate = Path(media)
+    elif isinstance(media, Mapping):
+        name_or_path = media.get("name") or media.get("path")
+        if name_or_path:
+            candidate = Path(str(name_or_path))
+        else:
+            data = media.get("data")
+            if data is None:
+                raise ValueError(f"{label} input is missing file data.")
+
+            cache_dir.mkdir(parents=True, exist_ok=True)
+            suffix = Path(str(media.get("orig_name", ""))).suffix or ".tmp"
+            with tempfile.NamedTemporaryFile(dir=cache_dir, suffix=suffix, delete=False) as tmp:
+                if isinstance(data, bytes):
+                    tmp.write(data)
+                elif hasattr(data, "read"):
+                    tmp.write(data.read())
+                else:
+                    raise TypeError(
+                        f"Unsupported data payload for {label.lower()} input: {type(data)!r}"
+                    )
+                candidate = Path(tmp.name)
+    else:
+        raise TypeError(f"Unsupported type for {label.lower()} input: {type(media)!r}")
+
+    if candidate is None or not candidate.exists():
+        raise FileNotFoundError(f"{label} file could not be located on disk.")
+
+    return candidate
 
 
 def build_demo() -> gr.Blocks:
