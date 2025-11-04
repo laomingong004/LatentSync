@@ -120,6 +120,17 @@ Run the Gradio app for inference:
 python gradio_app.py
 ```
 
+#### Colab-ready script for LatentSync 1.5
+
+If you are following the LatentSync 1.5 Google Colab tutorial, use the dedicated
+script below to avoid quoting issues when generating the file inside a notebook.
+The script exposes the same interface as the default Gradio app but keeps the
+configuration aligned with the 256×256 Stage2 checkpoint recommended for v1.5.
+
+```bash
+python app_v15.py
+```
+
 ### 2. Command Line Interface
 
 Run the script for inference:
