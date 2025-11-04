@@ -136,7 +136,9 @@ python app_v15.py
 > characters in the file and triggering `SyntaxError: unexpected character after
 > line continuation character`. In Colab, simply restore the tracked file with
 > `!git checkout -- app_v15.py` before launching the demo. A step-by-step
-> walkthrough is available in [`docs/colab_v15.md`](docs/colab_v15.md).
+> walkthrough is available in [`docs/colab_v15.md`](docs/colab_v15.md), and a
+> ready-to-run notebook lives at
+> [`notebooks/latentsync_v15_colab.ipynb`](notebooks/latentsync_v15_colab.ipynb).
 
 ### 2. Command Line Interface
 

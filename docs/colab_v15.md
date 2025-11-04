@@ -1,6 +1,9 @@
 # LatentSync 1.5 Colab Deployment Guide
 
-Follow the steps below inside a Google Colab notebook to launch the Gradio demo with a public share link. All commands assume you have selected a GPU runtime.
+A ready-to-run notebook version of these steps is bundled as
+[`notebooks/latentsync_v15_colab.ipynb`](../notebooks/latentsync_v15_colab.ipynb).
+Follow the cells below if you prefer to copy commands manually into your own
+Colab notebook. All commands assume you have selected a GPU runtime.
 
 1. **Inspect the GPU**
    ```python
