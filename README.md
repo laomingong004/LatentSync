@@ -123,13 +123,20 @@ python gradio_app.py
 #### Colab-ready script for LatentSync 1.5
 
 If you are following the LatentSync 1.5 Google Colab tutorial, use the dedicated
-script below to avoid quoting issues when generating the file inside a notebook.
-The script exposes the same interface as the default Gradio app but keeps the
-configuration aligned with the 256×256 Stage2 checkpoint recommended for v1.5.
+launcher that is already tracked in the repository. The configuration matches
+the 256×256 Stage2 checkpoint recommended for v1.5.
 
 ```bash
 python app_v15.py
 ```
+
+> [!TIP]
+> Previous notebook snippets circulated online re-generated `app_v15.py` from a
+> raw Python string that escaped triple quotes, leaving literal `\"\"\"`
+> characters in the file and triggering `SyntaxError: unexpected character after
+> line continuation character`. In Colab, simply restore the tracked file with
+> `!git checkout -- app_v15.py` before launching the demo. A step-by-step
+> walkthrough is available in [`docs/colab_v15.md`](docs/colab_v15.md).
 
 ### 2. Command Line Interface
 
