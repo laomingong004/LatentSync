@@ -10,6 +10,7 @@
 # Jupyter Notebook cache files
 .ipynb_checkpoints/
 *.ipynb
+!/notebooks/*.ipynb
 
 # Python cache files
 __pycache__/
